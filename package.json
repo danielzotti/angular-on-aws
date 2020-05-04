@@ -7,7 +7,17 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "build:browser:prod": "ng build --prod",
+    "build:browser:serverless": "ng build --prod --base-href /production/",
+    "build:serverless": "npm run build:browser:serverless && npm run build:server:serverless",
+    "build:prod": "npm run build:browser:prod && npm run build:server:prod",
+    "server": "node local.js",
+    "build:prod:deploy": "npm run build:prod && npm run deploy",
+    "build:serverless:deploy": "npm run build:serverless && npm run deploy",
+    "deploy": "serverless deploy",
+    "build:server:prod": "webpack --config webpack.server.config.js --progress --colors",
+    "build:server:serverless": "webpack --config webpack.server.config.js --progress --colors"
   },
   "private": true,
   "dependencies": {
@@ -19,9 +29,12 @@
     "@angular/platform-browser": "~9.1.4",
     "@angular/platform-browser-dynamic": "~9.1.4",
     "@angular/router": "~9.1.4",
+    "@ng-toolkit/serverless": "^8.1.0",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
-    "zone.js": "~0.10.2"
+    "zone.js": "~0.10.2",
+    "cors": "^2.8.5",
+    "aws-serverless-express": "^3.3.6"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.901.4",
@@ -29,8 +42,14 @@
     "@angular/compiler-cli": "~9.1.4",
     "@angular/language-service": "~9.1.4",
     "@types/node": "^12.11.1",
+    "opencollective": "^1.0.3",
+    "serverless": "^1.60.0",
+    "serverless-api-compression": "^1.0.1",
+    "serverless-apigw-binary": "^0.4.4",
+    "ts-loader": "^6.2.1",
     "ts-node": "~8.3.0",
     "tslint": "~6.1.0",
-    "typescript": "~3.8.3"
+    "typescript": "~3.8.3",
+    "webpack-cli": "^3.3.10"
   }
 }

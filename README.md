@@ -1,27 +1,39 @@
 # AngularOnAws
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.4.
+## Prerequisites
+- AWS cli
+    - See [AWS documentation](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
+- Angular cli
+    - `npm install -g @angular/cli`
+- Serverless framework
+    - `npm install serverless`
+- Create user credentials on AWS 
+    - See [AWS documentation](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html)
 
-## Development server
-
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+## What I've done
+- Configure serverless credentials (with custom profile)
+    - `serverless config credentials --provider aws --key {KEY} --secret {SECRET} --profile aws-on-aws`
+- Create Angular project from cli 
+    - `ng new angular-on-aws` (`npm install` run automatically after project creation)
+    - `cd angular-on-aws`
+- Add serverless plugin
+    - `ng add @ng-toolkit/serverless`
+- Fix missing `serverless-api-compression` package in @ng-toolkit/serverless
+    - `npm install serverless-api-compression`
+- Customize configuration `serverless.yml` (`region` and `profile`):
+    ```yaml
+    provider:
+      region: eu-west-3
+      profile: angular-on-aws
+    ```
+- Fix the problem on deploy `TypeError: express is not a function`
+    - set to `false` the value of `esModuleInterop` in `tsconfig.json`:
+    ```json
+    {
+      "esModuleInterop": false
+    }
+    ``` 
+- Deploy the project to AWS)
+    - `npm run build:serverless:deploy`
+- Click on the endpoint to see the app online:
+    - e.g. `https://{XYZ}.execute-api.{REGION}.amazonaws.com/production`
